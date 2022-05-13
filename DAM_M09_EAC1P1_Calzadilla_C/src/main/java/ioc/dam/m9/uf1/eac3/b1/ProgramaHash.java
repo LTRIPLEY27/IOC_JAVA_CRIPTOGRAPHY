@@ -11,6 +11,7 @@ package ioc.dam.m9.uf1.eac3.b1;
  */
 import java.io.File;
 import java.io.FileInputStream;
+import java.io.InputStream;
 import java.security.MessageDigest;
 import java.util.ArrayList;
 import java.util.Base64;
@@ -32,22 +33,6 @@ public class ProgramaHash {
                 
         //IMPLEMENTA
     	
-    	MessageDigest md = MessageDigest.getInstance("SHA-512");
-    	
-    	FileInputStream input = new FileInputStream(f);
-    	
-    	byte[] bytes = new byte[1024];
-    	int byteLeido = -1;
-    	
-    	while((byteLeido = input.read(bytes)) != -1) {
-    		md.update(bytes, 0, byteLeido);
-    	}
-    	
-    	byte[] hasheado = md.digest();
-    	
-    	String hashB64 = Base64.getEncoder().encodeToString(hasheado); // CODIFICACION DEL STRING A BASE 64
-    	
-    	return hashB64;
     }
 
     /**
@@ -81,6 +66,20 @@ public class ProgramaHash {
     public static void main(String[] args) throws Exception {
         
         //IMPLEMENTA
+    	
+    	//RECORRIDO DE LOS ARCHIVOS D ELA CARPETA
+    	try {
+    		InputStream archivosVerificar = new FileInputStream("C:\\Users\\isabe\\Documents\\GitHub\\IOC_JAVA_CRIPTOGRAPHY\\DAM_M09_EAC1P1_Calzadilla_C\\data");
+    		byte[] passingFile = new byte[1024]; // parsing a bytes
+    		int endingFile = -1;
+    		
+    		int verificaBytes = archivosVerificar.read(passingFile);
+    		
+    		
+    		
+    	}catch(Exception ex) {
+    		
+    	}
     }
     
     /**
