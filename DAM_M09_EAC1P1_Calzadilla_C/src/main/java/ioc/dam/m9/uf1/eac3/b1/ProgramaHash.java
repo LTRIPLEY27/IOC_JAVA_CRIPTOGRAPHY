@@ -12,6 +12,7 @@ package ioc.dam.m9.uf1.eac3.b1;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.InputStream;
+import java.io.OutputStream;
 import java.security.MessageDigest;
 import java.util.ArrayList;
 import java.util.Base64;
@@ -29,11 +30,36 @@ public class ProgramaHash {
      * @return La funció retorna el hash en forma de cadena base 64
      * @throws Exception 
      */
-   /* public static String hashFile(File f) throws Exception {
+     public static String hashFile(File f) throws Exception {
                 
-        //IMPLEMENTA
-    	
-    }*/
+         //IMPLEMENTA
+      	String algorithm = "SHA-512";
+      	MessageDigest arxiu = MessageDigest.getInstance(algorithm);
+     	String letras = "";
+     	//RECORRIDO DE LOS ARCHIVOS D ELA CARPETA
+     	try {
+     		
+     		InputStream archivosVerificar = new FileInputStream(f);//RECIBE CADA ARCHIVO Y LO PASA A STREAM PARA PARSEAR
+     		byte[] passingFile = new byte[1]; // parsing a bytes
+
+     		int endingFile = -1;
+    		int verificaBytes = archivosVerificar.read(passingFile);//VERIFICA LOS BYTES
+   
+     		while(verificaBytes != endingFile) {//RECORRE TODO EL DOCUMENTO TRANSCRIBIENDOLO A BYTES
+     			arxiu.update(passingFile);//DIGEST RECIBE LOS VALORES
+     			verificaBytes = archivosVerificar.read(passingFile);
+     		}
+     		
+     		archivosVerificar.close();
+     		byte[] traslate = arxiu.digest();//CREAMOS UN ARRAY DE BYTES CON EL VALOR DEL DIGEST
+     		letras = Base64.getEncoder().encodeToString(traslate);//TRASPONEMOS A LA BASE64
+
+     	}catch(Exception ex) {
+     		
+     	}
+     	
+     	return letras;
+    }
 
     /**
      * El programa recorrerà tots els arxius de la carpeta "data/copydetector" i
@@ -64,51 +90,43 @@ public class ProgramaHash {
      * @throws Exception 
      */
     public static void main(String[] args) throws Exception {
-        
-        //IMPLEMENTA
-    	String algorithm = "SHA-512";
-    	MessageDigest arxiu = MessageDigest.getInstance(algorithm);
+   
+    	File ficha = new File("C:\\Users\\isabe\\Documents\\GitHub\\IOC_JAVA_CRIPTOGRAPHY\\DAM_M09_EAC1P1_Calzadilla_C\\data");
     	
+    	HashMap <String, ArrayList <File>> arxiusPerHash = new HashMap <String, ArrayList<File>>();
+    	ArrayList <File> llistaArxius = new ArrayList();
     	
-    	//RECORRIDO DE LOS ARCHIVOS D ELA CARPETA
-    	try {
-    		InputStream archivosVerificar = new FileInputStream("C:\\Users\\isabe\\Documents\\GitHub\\IOC_JAVA_CRIPTOGRAPHY\\DAM_M09_EAC1P1_Calzadilla_C\\data");
-    		byte[] passingFile = new byte[1024]; // parsing a bytes
-    		int endingFile = -1;
+    	int cont = 0;
+    	for(File file : ficha.listFiles()) {
+    		System.out.println(hashFile(file));
+    		System.out.println(file.getName());
     		
-    		int verificaBytes = archivosVerificar.read(passingFile);
-    		
-    		while(verificaBytes != endingFile) {
-    			arxiu.update(passingFile);
-    			verificaBytes = archivosVerificar.read(passingFile);
+    		//arxiusPerHash.put(file.getName(), hashFile(file));
+    		String aux = hashFile(file);
+    		if(aux.equals(hashFile(file))) {
+    			cont++;
+    			llistaArxius.add(file);
+    			arxiusPerHash.put(file.getName(), llistaArxius);
+    			System.out.println("its a match" + cont);
+    		} else {
+    			cont++;
+    			System.out.println("Not match" + cont);
     		}
-    		
-    		archivosVerificar.close();
-    		byte[] traslate = arxiu.digest();
-    		
-    		String letras = "";
-    		
-    		for(byte x : traslate) {
-    			letras += Integer.toHexString((x >> 4) & 0xf);
-    			letras += Integer.toHexString(x  & 0xf);
-    		}
-    		
-    		System.out.println("Resum : " + algorithm + " " + letras);
-    	}catch(Exception ex) {
-    		
     	}
+    	
+    	informeDuplicats(arxiusPerHash);
     }
     
     /**
      * Es mostraran els arxius que són probablement iguals ( que tenen el mateix hash)
      * agrupats convenientment. 
      * Simplement cal recórrer "arxiusPerHash", i per cada entrada, veurem si la llista
-     * conté un o més fitxers. Si només en té 1, vol dir que no està repetit i l'ignorarem.
-     * Si en té més d'1, mostrarem un informe amb el codi hash i la llista d'arxius que 
+     * conté un o més fitxers. Si només en té 1, vol amb el codi hash i la llista d'arxius que 
      * tenen aquest hash.
      * @param arxiusPerHash 
      */
-   /* private static void informeDuplicats(HashMap<String, ArrayList<File>> arxiusPerHash){
+    
+   private static void informeDuplicats(HashMap<String, ArrayList<File>> arxiusPerHash){
         for(String clau:arxiusPerHash.keySet()) {
             if(arxiusPerHash.get(clau).size()>1) {
                 System.out.println(">------ Els següents arxius tenen hash idèntic ----------------------------------");
@@ -117,8 +135,8 @@ public class ProgramaHash {
                     System.out.println( "\t>" +f.getName() );
                 }
             }
-        }*/
+        }
 
         
-    //}
+    }
 }
