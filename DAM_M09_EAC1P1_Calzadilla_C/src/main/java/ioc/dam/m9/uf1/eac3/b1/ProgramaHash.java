@@ -29,11 +29,11 @@ public class ProgramaHash {
      * @return La funció retorna el hash en forma de cadena base 64
      * @throws Exception 
      */
-    public static String hashFile(File f) throws Exception {
+   /* public static String hashFile(File f) throws Exception {
                 
         //IMPLEMENTA
     	
-    }
+    }*/
 
     /**
      * El programa recorrerà tots els arxius de la carpeta "data/copydetector" i
@@ -66,6 +66,9 @@ public class ProgramaHash {
     public static void main(String[] args) throws Exception {
         
         //IMPLEMENTA
+    	String algorithm = "SHA-512";
+    	MessageDigest arxiu = MessageDigest.getInstance(algorithm);
+    	
     	
     	//RECORRIDO DE LOS ARCHIVOS D ELA CARPETA
     	try {
@@ -75,8 +78,22 @@ public class ProgramaHash {
     		
     		int verificaBytes = archivosVerificar.read(passingFile);
     		
+    		while(verificaBytes != endingFile) {
+    			arxiu.update(passingFile);
+    			verificaBytes = archivosVerificar.read(passingFile);
+    		}
     		
+    		archivosVerificar.close();
+    		byte[] traslate = arxiu.digest();
     		
+    		String letras = "";
+    		
+    		for(byte x : traslate) {
+    			letras += Integer.toHexString((x >> 4) & 0xf);
+    			letras += Integer.toHexString(x  & 0xf);
+    		}
+    		
+    		System.out.println("Resum : " + algorithm + " " + letras);
     	}catch(Exception ex) {
     		
     	}
@@ -91,7 +108,7 @@ public class ProgramaHash {
      * tenen aquest hash.
      * @param arxiusPerHash 
      */
-    private static void informeDuplicats(HashMap<String, ArrayList<File>> arxiusPerHash){
+   /* private static void informeDuplicats(HashMap<String, ArrayList<File>> arxiusPerHash){
         for(String clau:arxiusPerHash.keySet()) {
             if(arxiusPerHash.get(clau).size()>1) {
                 System.out.println(">------ Els següents arxius tenen hash idèntic ----------------------------------");
@@ -100,8 +117,8 @@ public class ProgramaHash {
                     System.out.println( "\t>" +f.getName() );
                 }
             }
-        }
+        }*/
 
         
-    }
+    //}
 }
