@@ -9,6 +9,8 @@ import java.security.GeneralSecurityException;
 import java.security.KeyFactory;
 import java.security.PublicKey;
 import java.security.spec.X509EncodedKeySpec;
+import java.util.Scanner;
+
 import javax.crypto.Cipher;
 
 import javax.crypto.spec.SecretKeySpec;
@@ -21,11 +23,13 @@ public class Encriptacio {
         byte[] bytesClau = Files.readAllBytes(new File(fitxer).toPath());
         X509EncodedKeySpec spec = new X509EncodedKeySpec(bytesClau);
         KeyFactory kf = KeyFactory.getInstance(algorisme);
+        
         return kf.generatePublic(spec);
     }
 
     public SecretKeySpec getClauSecreta(String fitxer, String algorisme) throws IOException {
         byte[] bytesClau = Files.readAllBytes(new File(fitxer).toPath());
+        
         return new SecretKeySpec(bytesClau, algorisme);
     }
 
@@ -49,9 +53,14 @@ public class Encriptacio {
     public static void main(String[] args) throws IOException, Exception {
         Encriptacio iniEnc = new Encriptacio();
 
-        
+        Scanner ask = new Scanner(System.in);
         //Encripta la clau
 
+        String clau;
+        System.out.println("Indique la clave");
+        clau = ask.next();
+        
+        iniEnc.
 
         //Encripta la carta
         

@@ -52,11 +52,11 @@ public class GeneraClaus {
             try {
                 gc_Meritxell = new GeneraClaus(1024);
                 gc_Meritxell.escriuAFitxer("ParellClaus/publica_Meritxell", gc_Meritxell.getPublica().getEncoded());
-		gc_Meritxell.escriuAFitxer("ParellClaus/privada_Meritxell", gc_Meritxell.getPrivada().getEncoded());
-		gc_Nuria = new GeneraClaus(1024);
-		gc_Nuria.escriuAFitxer("ParellClaus/publica_Nuria", gc_Nuria.getPublica().getEncoded());
-		gc_Nuria.escriuAFitxer("ParellClaus/privada_Nuria", gc_Nuria.getPrivada().getEncoded());
-                System.out.println("Claus asimètriques generades!");
+				gc_Meritxell.escriuAFitxer("ParellClaus/privada_Meritxell", gc_Meritxell.getPrivada().getEncoded());
+				gc_Nuria = new GeneraClaus(1024);
+				gc_Nuria.escriuAFitxer("ParellClaus/publica_Nuria", gc_Nuria.getPublica().getEncoded());
+				gc_Nuria.escriuAFitxer("ParellClaus/privada_Nuria", gc_Nuria.getPrivada().getEncoded());
+		                System.out.println("Claus asimètriques generades!");
             } catch (NoSuchAlgorithmException ex) {
                 Logger.getLogger(GeneraClaus.class.getName()).log(Level.SEVERE, null, ex);
             } catch (NoSuchProviderException ex) {

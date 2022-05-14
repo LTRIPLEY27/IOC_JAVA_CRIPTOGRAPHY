@@ -13,6 +13,12 @@ public class GeneraClauSimetrica {
 
     private final SecretKeySpec clauSecreta;
 
+    //CONSTRUCTOR, VERIFICAR
+    public GeneraClauSimetrica(SecretKeySpec clauSecreta) {
+    	this.clauSecreta = clauSecreta;
+    }
+    ////////////
+    
     public SecretKeySpec getClauSecreta() {
         return clauSecreta;
     }
