@@ -20,7 +20,8 @@ public class Encriptacio {
     private Cipher cipher;
 
     public PublicKey getPublica(String fitxer, String algorisme) throws Exception {
-        byte[] bytesClau = Files.readAllBytes(new File(fitxer).toPath());
+        
+    	byte[] bytesClau = Files.readAllBytes(new File(fitxer).toPath());
         X509EncodedKeySpec spec = new X509EncodedKeySpec(bytesClau);
         KeyFactory kf = KeyFactory.getInstance(algorisme);
         
@@ -38,32 +39,41 @@ public class Encriptacio {
     public void encriptaDades(File original, File encriptat, SecretKeySpec clauSecreta, String algorismeXifrat) throws IOException, GeneralSecurityException {
         
         //IMPLEMENTAR
-
+    	cipher = Cipher.getInstance(algorismeXifrat); // CIPHER RECIBE EL ALGORITMO YA CIFRADO
+    	cipher.init(Cipher.ENCRYPT_MODE, clauSecreta); // CON EL MÉTODO INIT, INICIAMOS LA ENCRIPTACIÓN DE LA CLAVE // solo recibe la clave privada
+    	escriuAFitxer(encriptat, cipher.doFinal(fitxerEnBytes(original))); // ENVIAMOS POR BYSTES EL FICHERO
     }
 
     //--------------------------------------------------------------
     public void encriptaClau(PublicKey clau, File fitxerClauOriginal, File fitxerClauEncriptada, String algorismeXifrat) throws IOException, GeneralSecurityException {
        
         //IMPLEMENTAR
+    	
+    	cipher = Cipher.getInstance(algorismeXifrat);
+    	cipher.init(Cipher.ENCRYPT_MODE, clau);// SOLO RECIBE LA CLAVE PÚBLICA
+    	escriuAFitxer(fitxerClauEncriptada, cipher.doFinal(fitxerEnBytes(fitxerClauOriginal)));
     }
 
     
       
     
     public static void main(String[] args) throws IOException, Exception {
-        Encriptacio iniEnc = new Encriptacio();
+       
+    	Encriptacio iniEnc = new Encriptacio();
 
-        Scanner ask = new Scanner(System.in);
-        //Encripta la clau
-
-        String clau;
-        System.out.println("Indique la clave");
-        clau = ask.next();
-        
-        iniEnc.
-
+    	// ENCRIPTACIÓN DE CLAVES
+    	
+        File fichaOriginal = new File("UnaClau/clauSecreta"); // CREACIÓN D ELA CARPETA Y ARCHIVO
         //Encripta la carta
+        File fichaEncriptado = new File("FitxersEncriptats/clauSecreta");
         
+        iniEnc.encriptaClau(iniEnc.getPublica("ParellClaus/publica_Meritxell", "RSA"), fichaOriginal, fichaEncriptado, "RSA");// ENCRIPTA CON LOS PARÁMETRO LA CLAVE EN EL FICHERO
+        
+     // ENCRIPTACIÓN DE ARCHIVOS
+        File archivoOriginal = new File("C:\\Users\\isabe\\Documents\\GitHub\\IOC_JAVA_CRIPTOGRAPHY\\DAM_M09_EAC1P1_Calzadilla_C\\confidential.txt");
+        File archivoEncriptado = new File("FitxersEncriptats/fitxerEncriptat");
+        
+        iniEnc.encriptaDades(archivoOriginal, archivoEncriptado, iniEnc.getClauSecreta("UnaClau/clauSecreta", "AES"), "AES");//LUEGO DE INDICAR LOS ARCHIVOS DONDE ALMACENAR LAS CLAVES Y FICHEROS A ENCRIPTAR, LLAMAMOS AL MÉTODO DE CLASE PARA QUE LOS RECIBA POR PARÁMETROS Y GENERE LOS ARCHIVOS Y CLAVES
     }
 
           // Mètodes auxiliars 

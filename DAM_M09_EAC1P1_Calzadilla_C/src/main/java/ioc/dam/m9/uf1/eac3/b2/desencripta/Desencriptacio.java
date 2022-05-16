@@ -33,6 +33,10 @@ public class Desencriptacio {
         public void desencriptaClau(PrivateKey clauPrivada, File clauEncriptadaRebuda, File fitxerClauDesencriptat, String algorisme) throws IOException, GeneralSecurityException {
 		
             //IMPLEMENTAR
+        	
+        	cipher = Cipher.getInstance( algorisme ); 
+        	cipher.init(Cipher.DECRYPT_MODE, clauPrivada); // REALIZAMOS EL MISMO PROCEDIMIENTO QUE PARA ENCRIPTAR SOLO LLAMANDO A LA CONSTANTE DEL MÉTODO QUE CORRESPONDE
+        	escriuAFitxer(fitxerClauDesencriptat, cipher.doFinal(fitxerEnBytes(clauEncriptadaRebuda)));
             
        }
 	
@@ -41,17 +45,24 @@ public class Desencriptacio {
         public void desencriptaDades(File fitxerEncriptatRebut, File fitxerDesencriptat, SecretKeySpec clauSecreta, String algorisme) throws IOException, GeneralSecurityException {
 		
             //IMPLEMENTAR
+        	cipher = Cipher.getInstance(algorisme);
+            cipher.init(Cipher.DECRYPT_MODE, clauSecreta);
+            escriuAFitxer(fitxerDesencriptat,cipher.doFinal(fitxerEnBytes(fitxerEncriptatRebut)));
 	}
 	
-      
-        
-   
-        
+
         
 	public static void main(String[] args) throws IOException, Exception{
 		Desencriptacio iniDes = new Desencriptacio();
 		
 		//IMPLEMENTAR
+		File clauEncriptadaRebuda = new File("FitxersEncriptats/clauSecreta");
+		File clauSecretaDesencriptada = new File("FitxersDesencriptats/clauSecreta");
+		iniDes.desencriptaClau(iniDes.getPrivada("ParellClaus/privada_Meritxell", "RSA"), clauEncriptadaRebuda, clauSecretaDesencriptada, "RSA");
+		
+		File fitxerEncriptatRebut = new File("FitxersEncriptats/fitxerEncriptat");
+		File fitxerDesencriptat = new File("FitxersDesencriptats/fitxerDesencriptat");
+		iniDes.desencriptaDades(fitxerEncriptatRebut, fitxerDesencriptat, iniDes.getClauSecreta("FitxersDesencriptats/clauSecreta", "AES"), "AES");
 	}
         
         
