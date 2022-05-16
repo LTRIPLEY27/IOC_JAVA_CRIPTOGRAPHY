@@ -16,6 +16,7 @@ import java.io.OutputStream;
 import java.security.MessageDigest;
 import java.util.ArrayList;
 import java.util.Base64;
+import java.util.Enumeration;
 import java.util.HashMap;
 
 
@@ -95,23 +96,32 @@ public class ProgramaHash {
     	
     	HashMap <String, ArrayList <File>> arxiusPerHash = new HashMap <String, ArrayList<File>>();
     	ArrayList <File> llistaArxius = new ArrayList();
+    	String hashB64 = "";
+    	ArrayList <File> listaEmpty = new ArrayList <File>();
+    	ArrayList <File> listaHash = new ArrayList <File>();
+    	int i = 0;
     	
-    	int cont = 0;
     	for(File file : ficha.listFiles()) {
-    		System.out.println(hashFile(file));
-    		System.out.println(file.getName());
     		
-    		//arxiusPerHash.put(file.getName(), hashFile(file));
-    		String aux = hashFile(file);
-    		if(aux.equals(hashFile(file))) {
-    			cont++;
-    			llistaArxius.add(file);
-    			arxiusPerHash.put(file.getName(), llistaArxius);
-    			System.out.println("its a match" + cont);
-    		} else {
-    			cont++;
-    			System.out.println("Not match" + cont);
-    		}
+    		hashB64 = hashFile(file); //STRING HASH, KEY
+    		
+    		listaHash.add(file);
+    		
+    		arxiusPerHash.put(hashB64, listaHash);
+    		
+    			if(arxiusPerHash.containsKey((hashB64) == null) ) {
+        			listaEmpty.add(file);
+        			arxiusPerHash.put(hashB64, listaEmpty);
+        		} else {
+        			if(arxiusPerHash.get(hashB64).contains(hashFile(file))) {
+        				
+        				llistaArxius.add(file);
+        				arxiusPerHash.put(hashB64, llistaArxius);
+        			}		
+        		}
+    			
+    			i++;
+    	
     	}
     	
     	informeDuplicats(arxiusPerHash);
@@ -127,11 +137,11 @@ public class ProgramaHash {
      */
     
    private static void informeDuplicats(HashMap<String, ArrayList<File>> arxiusPerHash){
-        for(String clau:arxiusPerHash.keySet()) {
+        for(String clau : arxiusPerHash.keySet()) {
             if(arxiusPerHash.get(clau).size()>1) {
                 System.out.println(">------ Els següents arxius tenen hash idèntic ----------------------------------");
-                System.out.println(" HASH:"+clau);
-                for(File f:arxiusPerHash.get(clau)) {
+                System.out.println(" HASH:"+ clau);
+                for(File f : arxiusPerHash.get(clau)) {
                     System.out.println( "\t>" +f.getName() );
                 }
             }
