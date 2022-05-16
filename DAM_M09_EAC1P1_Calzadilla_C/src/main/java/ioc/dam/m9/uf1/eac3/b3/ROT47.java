@@ -9,7 +9,7 @@ import java.util.Scanner;
 
 /**
  *
- * @author tomas
+ * @author Isabel Calzadilla
  */
 public class ROT47 {
     private static Scanner in;
@@ -37,11 +37,12 @@ public class ROT47 {
         String missatge = in.nextLine();
         in.nextLine();
 
-        int key = 47;
-        String decrypText = "";
+        int key = 47; // CONSTANTE DEL CIFRADO
+        String decrypText = ""; // STRING A RECIBIR CARACTER A CARACTER
+        
         for (int i = 0; i < missatge.length(); i++) {
-            int temp = (int)missatge.charAt(i) - key;
-            if((int)missatge.charAt(i) == 32){
+            int temp = (int) missatge.charAt(i) - key; // UBICACIÓN DEL CHAR EN LA VARIABLE PARA VERIFICAR RESTANDO LA CONSTANTE
+            if((int) missatge.charAt(i) == 32){ // VERIFICACIÓN
                 decrypText += " ";
             } else if(temp < 32){
                 temp += 94;
@@ -57,6 +58,24 @@ public class ROT47 {
     private static void cipherEncryption() {
         
         //IMPLEMENTA
+    	System.out.println("Entra missatge: ");
+        String missatge = in.nextLine();
+        in.nextLine();
+
+        int key = 47;// CONSTANTE DEL CIFRADO
+        String encrypText = "";// STRING A RECIBIR CARACTER A CARACTER
+        for (int i = 0; i < missatge.length(); i++) {
+            int temp = (int)missatge.charAt(i) + key;// UBICACIÓN DEL CHAR EN LA VARIABLE PARA VERIFICAR SUMANDO LA CONSTANTE PARA UBICAR EL CARACTER CIFRADO
+            if((int)missatge.charAt(i) == 32){// VERIFICACIÓN
+            	encrypText += " ";
+            } else if(temp > 126){
+                temp -= 94;
+                encrypText += (char)temp;
+            } else {
+            	encrypText += (char)temp;
+            } 
+        }
         
+        System.out.println("Text Encriptat: " + encrypText);
     }
 }
