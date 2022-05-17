@@ -92,36 +92,21 @@ public class ProgramaHash {
      */
     public static void main(String[] args) throws Exception {
    
-    	File ficha = new File("C:\\Users\\isabe\\Documents\\GitHub\\IOC_JAVA_CRIPTOGRAPHY\\DAM_M09_EAC1P1_Calzadilla_C\\data");
-    	
+    	File ficha = new File("data");
     	HashMap <String, ArrayList <File>> arxiusPerHash = new HashMap <String, ArrayList<File>>();
-    	ArrayList <File> llistaArxius = new ArrayList();
     	String hashB64 = "";
-    	ArrayList <File> listaEmpty = new ArrayList <File>();
-    	ArrayList <File> listaHash = new ArrayList <File>();
-    	int i = 0;
-    	
+ 
     	for(File file : ficha.listFiles()) {
     		
     		hashB64 = hashFile(file); //STRING HASH, KEY
-    		
+    		ArrayList <File> listaHash = new ArrayList <File>();
     		listaHash.add(file);
+    		if(arxiusPerHash.get(hashB64) == null) {
+    			arxiusPerHash.put(hashB64, listaHash);
+    		} else {
+    			arxiusPerHash.get(hashB64).add(file);
+    		}
     		
-    		arxiusPerHash.put(hashB64, listaHash);
-    		
-    			if(arxiusPerHash.containsKey((hashB64) == null) ) {
-        			listaEmpty.add(file);
-        			arxiusPerHash.put(hashB64, listaEmpty);
-        		} else {
-        			if(arxiusPerHash.get(hashB64).contains(hashFile(file))) {
-        				
-        				llistaArxius.add(file);
-        				arxiusPerHash.put(hashB64, llistaArxius);
-        			}		
-        		}
-    			
-    			i++;
-    	
     	}
     	
     	informeDuplicats(arxiusPerHash);
